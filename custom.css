@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light dark;
   /* Common */
   --base-unit: 0.5em;
   --small-unit: 0.3em;
@@ -173,6 +174,7 @@ img[src*="Off"] {
 #holder {
   overflow-y: auto;
   min-height: unset;
+  position: unset;
   > .container-fluid {
     padding: 0;
   }
