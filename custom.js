@@ -9,8 +9,8 @@ window.WebSocket = function(...args) {
   return socket;
 };
 
-// Initial setting load.
-loadSettings();
+// Initial theme setup.
+setupTheme();
 
 // Watch for color scheme changes to update the theme-color.
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener(
@@ -68,8 +68,8 @@ const variableDefinitions = [
   { name: "serenity-hide-time-sun", initial: "true" },
 ];
 
-// Load settings from user variables and stores them in `variables`
-function loadSettings() {
+// Setup theme settings.
+function setupTheme() {
   $.ajax({
     url: "/json.htm?type=command&param=getuservariables",
     async: true,
@@ -92,6 +92,7 @@ function loadSettings() {
       });
       setupColors(variables);
       setupHiddenElements(variables);
+      setupiOSIcon();
     },
   });
 };
@@ -102,6 +103,15 @@ function setUserVariable(name, value) {
     async: true,
     dataType: "json",
   });
+}
+
+// Setup iphone icon.
+function setupiOSIcon() {
+  document.querySelectorAll("link[rel^='apple-touch-icon']").forEach(e => e.remove());
+  var link = document.createElement("link");
+  link.setAttribute("rel", "apple-touch-icon");
+  link.setAttribute("href", 'styles/domoticz-serenity-theme/images/apple-touch-icon.png');
+  document.getElementsByTagName("head")[0].appendChild(link);
 }
 
 // Setup CSS color variables.
