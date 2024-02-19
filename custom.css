@@ -1,5 +1,4 @@
 :root {
-  color-scheme: light dark;
   /* Common */
   --base-unit: 0.5em;
   --small-unit: 0.3em;
@@ -26,17 +25,15 @@
   --primary-text-icon-filter: var(--black-filter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(25% 0.015 var(--secondary-hue));
-    --background-transparent: oklch(25% 0.015 var(--secondary-hue) / 0.6);
-    --background-sub: oklch(30% 0.025 var(--secondary-hue));
-    --secondary: oklch(45% 0.045 var(--secondary-hue));
-    --text-primary: var(--white);
-    --hover-brightness: 125%;
-    --disabled-brightness: 85%;
-    --primary-text-icon-filter: var(--white-filter);
-  }
+[data-scheme="dark"] {
+  --background: oklch(25% 0.015 var(--secondary-hue));
+  --background-transparent: oklch(25% 0.015 var(--secondary-hue) / 0.6);
+  --background-sub: oklch(30% 0.025 var(--secondary-hue));
+  --secondary: oklch(45% 0.045 var(--secondary-hue));
+  --text-primary: var(--white);
+  --hover-brightness: 125%;
+  --disabled-brightness: 85%;
+  --primary-text-icon-filter: var(--white-filter);
 }
 
 body {
