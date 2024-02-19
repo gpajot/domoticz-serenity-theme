@@ -12,11 +12,11 @@ window.WebSocket = function(...args) {
 // Initial theme setup.
 setupTheme();
 
-// Watch for color scheme changes to update the theme-color.
+// Watch for color scheme preference changes to update colors.
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener(
   'change',
   function(event) {
-    setThemeColor();
+    setColorScheme(event.matches ? 'dark' : 'light');
   },
 );
 
@@ -119,15 +119,15 @@ function setupColors(variables) {
   const root = document.documentElement;
   root.style.setProperty('--primary-hue', variables['serenity-color-hue-primary']);
   root.style.setProperty('--secondary-hue', variables['serenity-color-hue-secondary']);
-  switch(variables['serenity-color-scheme-preference']) {
-    case 'dark':
-      root.style.setProperty('color-scheme', 'only dark');
-      break;
-    case 'light':
-      root.style.setProperty('color-scheme', 'only light');
-      break;
-  }
-  setThemeColor();
+  setColorScheme(
+    (
+      variables['serenity-color-scheme-preference'] === 'dark'
+      || variables['serenity-color-scheme-preference'] === 'system'
+      && window.matchMedia('(prefers-color-scheme: dark)').matches
+    )
+    ? 'dark'
+    : 'light'
+  );
 }
 
 // Load style sheets for hidden elements.
@@ -148,7 +148,8 @@ function setupHiddenElements(variables) {
 const canvas = document.createElement("canvas");
 canvas.width = canvas.height = 1;
 const ctx = canvas.getContext("2d");
-async function setThemeColor() {
+async function setColorScheme(scheme) {
+  document.documentElement.setAttribute('data-scheme', scheme)
   while (!document.body) {
     await new Promise(r => setTimeout(r, 50));
   }
