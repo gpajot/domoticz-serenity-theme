@@ -57,10 +57,20 @@ img[src*="Off"] {
 
 .navbar {
   position: sticky;
-  background-color: var(--background-transparent);
+  background: linear-gradient(var(--background), 25%, var(--background-transparent));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 0.15em solid var(--secondary);
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    background: linear-gradient(var(--background-transparent), 75%, var(--background));
+    border-bottom: none;
+    border-top: 0.15em solid var(--secondary);
+    margin: 0;
+    top: unset;
+    bottom: 0;
+    padding-bottom: 1em;
+  }
   .navbar-inner {
     background-color: transparent;
     border: none;
@@ -112,6 +122,11 @@ img[src*="Off"] {
     margin: 0;
     padding: 0;
     border-radius: var(--small-unit);
+    @media screen and (max-width: 767px) {
+      position: absolute;
+      top: unset;
+      bottom: 100%;
+    }
     > li + li {
       border-top: 0.1em solid var(--secondary);
     }
@@ -124,6 +139,7 @@ img[src*="Off"] {
       flex-direction: row-reverse;
       align-items: center;
       justify-content: space-between;
+      padding: var(--base-unit);
       &:hover {
         background-color: var(--background);
       }
@@ -146,9 +162,22 @@ img[src*="Off"] {
       border-top-width: 0;
       content: "";
     }
+    @media screen and (max-width: 767px) {
+      &::before {
+        border: 0.4em solid transparent;
+        border-top-color: var(--background-sub);
+        border-bottom-width: 0;
+        top: unset;
+        bottom: -5px;
+      }
+    }
   }
   > .dropdown > ul > li .dropdown-menu {
     margin-top: -0.1em;
+    @media screen and (max-width: 767px) {
+      margin-top: 0;
+      bottom: 0;
+    }
   }
   .dropdown-submenu > a {
     &::after {
@@ -172,6 +201,9 @@ img[src*="Off"] {
   overflow-y: auto;
   min-height: unset;
   position: unset;
+  @media screen and (max-width: 767px) {
+    margin-top: 2em;
+  }
   > .container-fluid {
     padding: 0;
   }
