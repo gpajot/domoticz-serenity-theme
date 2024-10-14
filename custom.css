@@ -807,7 +807,8 @@ device-filter-by-usage.btn-group > .active,
 .btnstyle3#timerplandelete[disabled],
 .btnstyle3#userdelete[disabled],
 .btnstyle3#timerdelete[disabled],
-.btnstyle3-dis {
+.btnstyle3-dis,
+a.btnstyle3-dis {
   background: unset;
   border: none;
   border-radius: var(--small-unit);

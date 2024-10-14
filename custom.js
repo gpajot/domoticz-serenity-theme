@@ -15,9 +15,7 @@ setupTheme();
 // Watch for color scheme preference changes to update colors.
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener(
   'change',
-  function(event) {
-    setColorScheme(event.matches ? 'dark' : 'light');
-  },
+  function() { setColorScheme(); },
 );
 
 // Refresh things when page gets back in focus.
@@ -67,6 +65,8 @@ const variableDefinitions = [
   { name: "serenity-hide-menu-icons", initial: "true" },
   { name: "serenity-hide-time-sun", initial: "true" },
 ];
+// User variables.
+var userVariables = {};
 
 // Setup theme settings.
 function setupTheme() {
@@ -90,8 +90,10 @@ function setupTheme() {
           variables[variableDef.name] = variableDef.initial;
         }
       });
-      setupColors(variables);
-      setupHiddenElements(variables);
+      userVariables = variables
+      setupColors();
+      setColorScheme();
+      setupHiddenElements();
       setupiOSIcon();
     },
   });
@@ -115,25 +117,16 @@ function setupiOSIcon() {
 }
 
 // Setup CSS color variables.
-function setupColors(variables) {
+function setupColors() {
   const root = document.documentElement;
-  root.style.setProperty('--primary-hue', variables['serenity-color-hue-primary']);
-  root.style.setProperty('--secondary-hue', variables['serenity-color-hue-secondary']);
-  setColorScheme(
-    (
-      variables['serenity-color-scheme-preference'] === 'dark'
-      || variables['serenity-color-scheme-preference'] === 'system'
-      && window.matchMedia('(prefers-color-scheme: dark)').matches
-    )
-    ? 'dark'
-    : 'light'
-  );
+  root.style.setProperty('--primary-hue', userVariables['serenity-color-hue-primary'] || 0);
+  root.style.setProperty('--secondary-hue', userVariables['serenity-color-hue-secondary'] || 0);
 }
 
 // Load style sheets for hidden elements.
-function setupHiddenElements(variables) {
+function setupHiddenElements() {
   variableDefinitions.forEach(function(variableDef) {
-    if (variableDef.name.substr(0, 14) === 'serenity-hide-' && variables[variableDef.name] === "true") {
+    if (variableDef.name.substr(0, 14) === 'serenity-hide-' && userVariables[variableDef.name] === "true") {
       var link = document.createElement("link");
       link.setAttribute("rel", "stylesheet");
       link.setAttribute("type", "text/css");
@@ -148,7 +141,15 @@ function setupHiddenElements(variables) {
 const canvas = document.createElement("canvas");
 canvas.width = canvas.height = 1;
 const ctx = canvas.getContext("2d");
-async function setColorScheme(scheme) {
+async function setColorScheme() {
+  const scheme =
+    (
+      userVariables['serenity-color-scheme-preference'] === 'dark'
+      || userVariables['serenity-color-scheme-preference'] === 'system'
+      && window.matchMedia('(prefers-color-scheme: dark)').matches
+    )
+    ? 'dark'
+    : 'light';
   document.documentElement.setAttribute('data-scheme', scheme)
   while (!document.body) {
     await new Promise(r => setTimeout(r, 50));
